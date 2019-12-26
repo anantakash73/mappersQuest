@@ -118,7 +118,7 @@ function onEachFeature(feature, layer) {
         click: whenClicked
     })
 
-    let popupContent = "<div> <button onclick='addToUnion()'>Union</button> <button onclick='addToIntersect()'>Intersect</button> <button onclick='savePolygon()'>Save</button> <button onclick='removePolygon()'>Remove</button></div>"
+    let popupContent = "<div> <button onclick='addToUnion()'>Add to Union</button> <button onclick='addToIntersect()'>Add to Intersect</button> <button onclick='savePolygon()'>Save</button> <button onclick='removePolygon()'>Remove</button></div>"
     layer.bindPopup(popupContent)
 }
 
