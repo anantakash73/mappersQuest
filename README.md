@@ -36,7 +36,9 @@ System Design
 The frontend is written using html and jquery. The backend is an Express app. This was done to quickly create a basic backend that could serve up the API and connect to the database. 
 The database is a mongoDb instance running in a MongoDB cluster. The choice to store the geoJSON object was either a PostGres database since that has support for geographical data through postGIS or mongoDB which also allows for indexing on geoJSON. Storing the geoJSON directly was going to be easier for this application, which is why it was chosen. 
 
-The main external package used is Turf which makes it extremely simple to do union and intersect operations than having to write them myself, especially as with geospatial data you have to account for the curvature. Other packages used are geojson-validation to validate geoJSONs and geojson-random to reliably generate random polygons which made testing a lot easier. 
+The main external package used is Turf which makes it extremely simple to do union and intersect operations than having to write them myself, especially as with geospatial data you have to account for the curvature. During development, the cdn serving the package actually went down, so I used browserify to create a local copy and used that instead. This also reduces load time for the page since this package can now be locally cached and we do not have to retrieve it everytime. 
+
+ Other packages used are geojson-validation to validate geoJSONs and geojson-random to reliably generate random polygons which made testing a lot easier. 
 
 The biggest challenges were wrangling with the geoJSON to understand their structure as well as defining the scope of the application. Initially, there was no support for MultiPolygons created due to the set operations but this was added since MultiPolygons would definitely be created. 
 
