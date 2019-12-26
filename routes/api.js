@@ -27,7 +27,7 @@ router.post('/savePolygon', (req, res, next) => {
 router.get('/showPolygons', (req, res, next) => {
     controller.getFromDatabase().then((features) => {
         // })
-        //console.log(features)
+        console.log(features)
         let formatted_features = []
         features.forEach((feature) => {
             geojson_feature = {

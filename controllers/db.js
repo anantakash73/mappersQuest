@@ -17,7 +17,14 @@ async function getPolygonsFromDb() {
     let features = await modelPolygon.polygon.find((err, data) => {
         return data
     })
-    return features
+    let multiFeatures = await modelMultiPolygon.multiPolygon.find((err, data) => {
+        return data
+    })
+    let final_feature_list = []
+    features.forEach((feature) => final_feature_list.push(feature))
+    multiFeatures.forEach((feature) => final_feature_list.push(feature))
+
+    return final_feature_list
 }
 
 function saveObjectToDb(polygonObject, type) {
@@ -99,19 +106,23 @@ function parseGeoJson(geoJson) {
     // }
 
     turf.geomEach(geoJson, (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) => {
-        if (currentGeometry.type === "Polygon") {
-            savePolygonToDb({
-                properties: featureProperties,
-                coordinates: currentGeometry.coordinates
-            })
+        // if (currentGeometry.type === "Polygon") {
+        //     saveObjectToDb({
+        //         properties: featureProperties,
+        //         coordinates: currentGeometry.coordinates
+        //     })
 
-        } else if (currentGeometry.type === "MultiPolygon") {
-            console.log("Error here, non polygon added")
-            saveMultiPolygonToDb({
-                properties: featureProperties,
-                coordinates: currentGeometry.coordinates
-            })
-        }
+        // } else if (currentGeometry.type === "MultiPolygon") {
+        //     console.log("Error here, non polygon added")
+        //     saveObjectToDb({
+        //         properties: featureProperties,
+        //         coordinates: currentGeometry.coordinates
+        //     })
+        // }
+        saveObjectToDb({
+            properties: featureProperties,
+            coordinates: currentGeometry.coordinates
+        }, currentGeometry.type)
 
     })
 

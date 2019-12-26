@@ -73,8 +73,16 @@ function doIntersect() {
     let intersect_poly;
     console.log(intersect_polygons)
     intersect_polygons.forEach((current_feature) => {
-            if (intersect_poly === undefined) intersect_poly = turf.helpers.polygon(current_feature.geometry.coordinates)
-            else intersect_poly = turf.intersect(intersect_poly, turf.helpers.polygon(current_feature.geometry.coordinates))
+
+            if (current_feature.geometry.type === 'Polygon') {
+                if (intersect_poly === undefined) intersect_poly = turf.helpers.polygon(current_feature.geometry.coordinates)
+                else intersect_poly = turf.intersect(intersect_poly, turf.helpers.polygon(current_feature.geometry.coordinates))
+
+            } else if (current_feature.geometry.type === 'MultiPolygon') {
+                if (intersect_poly === undefined) intersect_poly = turf.helpers.multiPolygon(current_feature.geometry.coordinates)
+                else intersect_poly = turf.intersect(intersect_poly, turf.helpers.multiPolygon(current_feature.geometry.coordinates))
+
+            }
         })
         // if (union_poly === "") union_poly = turf.helpers.polygon(currentGeometry.coordinates)
         //     else union_poly = turf.union(union_poly, turf.helpers.polygon(currentGeometry.coordinates))
