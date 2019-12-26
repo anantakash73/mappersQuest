@@ -18,5 +18,5 @@ const multiPolygonSchema = new mongoose.Schema({
         required: true
     }
 }, );
-
+multiPolygonSchema.index({ multiPolygon: "2dsphere" })
 module.exports.multiPolygon = mongoose.model('MultiPolygon', multiPolygonSchema, 'multipolygons')

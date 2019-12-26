@@ -15,6 +15,7 @@ const polygonSchema = new mongoose.Schema({
         ], // Array of arrays of arrays of numbers
         required: true
     }
-}, );
+});
+polygonSchema.index({ polygon: '2dsphere' })
 
 module.exports.polygon = mongoose.model('Polygon', polygonSchema, 'polygons')

@@ -1,16 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var controller = require('../controllers/db')
-var gjv = require('geojson-validation')
-var random = require('geojson-random');
+var gjv = require('geojson-validation') // Does geoJSON validation
+var random = require('geojson-random'); // Generates random geoJSON
 var request = require('request')
 
-/* GET home page. */
-router.get('/checkDB', function(req, res, next) {
-    console.log("reached get request")
-    controller.databaseCheck()
-});
 
+// type: POST
+// data: geoJSON feature
+// function: Checks if a passes feature is valid geoJSON.
+//           if yes, then it is saved to the db
+//           else, error returned
+//           Can save both Polygon and MultiPolygon objects
+// response: message object
 router.post('/savePolygon', (req, res, next) => {
     if (gjv.valid(req.body)) {
         controller.saveToDatabase(req.body).then((saveStatus) => {
@@ -24,6 +26,11 @@ router.post('/savePolygon', (req, res, next) => {
     }
 })
 
+
+// type: GET
+// data: None
+// function: Gets all objects saved in the db and formats them as features
+// response: list of features as a JSON object
 router.get('/showPolygons', (req, res, next) => {
     controller.getFromDatabase().then((features) => {
         // })
@@ -50,6 +57,10 @@ router.get('/showPolygons', (req, res, next) => {
     })
 })
 
+// type: GET
+// data: url passed by user
+// function: does a GET request on the url supplied and if it is a valid geoJSON, returns it
+// response: geoJSON obtained from url
 router.get('/getJSON', (req, response, next) => {
     let url = req.query.url
     request(url, (err, res, body) => {
@@ -61,6 +72,10 @@ router.get('/getJSON', (req, response, next) => {
 
 })
 
+// type: POST
+// data: map bounding box
+// function: Using the map's boundinx box, the function generates a random polygon that will fit within
+// response: Feature object representing the random polygon generated
 router.post('/getRandomPolygon', (req, res, next) => {
     let mapBbox = req.body
     let minX = mapBbox['_southWest']['lat']
